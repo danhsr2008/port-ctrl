@@ -9,8 +9,8 @@ public class Fornecedor {
 	private String motorista;
 	private String telefone;
 	private String pedido;
-	private String numeroNota;
 	private String conferente;
+	private String numeroNota;
 	private String dataChegada;
 	private String horaSubida;
 	private String horaSaida;
@@ -21,6 +21,15 @@ public class Fornecedor {
 		this.placa = placa;
 		this.mercadoria = mercadoria;
 		this.status = "aguardando";
+		this.motorista = "";
+		this.telefone = "";
+		this.pedido = "";
+		this.conferente = "";
+		this.numeroNota = "";
+		this.dataChegada = "";
+		this.horaSubida = "";
+		this.horaSaida = "";
+		this.observacoesPortaria = "";
 	}
 
 	// Getters e Setters
@@ -88,20 +97,20 @@ public class Fornecedor {
 		this.pedido = pedido;
 	}
 
-	public String getNumeroNota() {
-		return numeroNota;
-	}
-
-	public void setNumeroNota(String numeroNota) {
-		this.numeroNota = numeroNota;
-	}
-
 	public String getConferente() {
 		return conferente;
 	}
 
 	public void setConferente(String conferente) {
 		this.conferente = conferente;
+	}
+
+	public String getNumeroNota() {
+		return numeroNota;
+	}
+
+	public void setNumeroNota(String numeroNota) {
+		this.numeroNota = numeroNota;
 	}
 
 	public String getDataChegada() {
@@ -134,5 +143,11 @@ public class Fornecedor {
 
 	public void setObservacoesPortaria(String observacoesPortaria) {
 		this.observacoesPortaria = observacoesPortaria;
+	}
+
+	@Override
+	public String toString() {
+		return "Fornecedor{" + "id=" + id + ", nome='" + nome + '\'' + ", placa='" + placa + '\'' + ", mercadoria='"
+				+ mercadoria + '\'' + ", status='" + status + '\'' + '}';
 	}
 }
