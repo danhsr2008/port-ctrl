@@ -1,5 +1,6 @@
 package com.aide.controle.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,9 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.aide.controle.R;
@@ -26,18 +25,11 @@ public class FornecedorAdapter extends RecyclerView.Adapter<FornecedorAdapter.My
 	private List<Fornecedor> listaFornecedores;
 	private Context context;
 	private OnFornecedorClickListener listener;
-	private SimpleDateFormat sdfDisplay = new SimpleDateFormat("dd/MM/yyyy 'às' HH:mm", Locale.getDefault());
 
 	public interface OnFornecedorClickListener {
 		void onEditarClick(Fornecedor fornecedor, int position);
 
 		void onFornecedorAtualizado(Fornecedor fornecedor, int position);
-
-		void onApagarClick(Fornecedor fornecedor, int position);
-
-		void onAdicionarInfoClick(Fornecedor fornecedor, int position);
-
-		void onMostrarInfoClick(Fornecedor fornecedor);
 	}
 
 	public FornecedorAdapter(List<Fornecedor> lista, Context c, OnFornecedorClickListener listener) {
@@ -48,7 +40,7 @@ public class FornecedorAdapter extends RecyclerView.Adapter<FornecedorAdapter.My
 
 	public static class MyViewHolder extends RecyclerView.ViewHolder {
 		TextView tvNome, tvMercadoria, tvMotorista, tvPlaca, tvTelefone, tvPedido, tvConferente, tvNota;
-		Button btnLiberado, btnDescarregou, btnApagar;
+		Button btnLiberado, btnDescarregou;
 		LinearLayout cardHeader;
 
 		public MyViewHolder(@NonNull View itemView) {
@@ -63,7 +55,6 @@ public class FornecedorAdapter extends RecyclerView.Adapter<FornecedorAdapter.My
 			tvNota = itemView.findViewById(R.id.tvNota);
 			btnLiberado = itemView.findViewById(R.id.btnLiberado);
 			btnDescarregou = itemView.findViewById(R.id.btnDescarregou);
-			btnApagar = itemView.findViewById(R.id.btnApagar);
 			cardHeader = itemView.findViewById(R.id.card_header);
 		}
 	}
@@ -79,36 +70,28 @@ public class FornecedorAdapter extends RecyclerView.Adapter<FornecedorAdapter.My
 	public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 		Fornecedor fornecedor = listaFornecedores.get(position);
 
-		// Configuração dos textos com proteção contra null
-		holder.tvNome.setText(fornecedor.getNome() != null ? fornecedor.getNome() : "");
-		holder.tvMercadoria.setText(fornecedor.getMercadoria() != null ? fornecedor.getMercadoria() : "");
+		holder.tvNome.setText(fornecedor.getNome());
+		holder.tvMercadoria.setText(fornecedor.getMercadoria());
+		holder.tvMotorista
+				.setText(fornecedor.getMotorista().isEmpty() ? "" : "Motorista: " + fornecedor.getMotorista());
+		holder.tvPlaca.setText(fornecedor.getPlaca().isEmpty() ? "" : "Placa: " + formatarPlaca(fornecedor.getPlaca()));
+		holder.tvTelefone.setText(
+				fornecedor.getTelefone().isEmpty() ? "" : "Tel: " + formatarTelefone(fornecedor.getTelefone()));
+		holder.tvPedido.setText(fornecedor.getPedido().isEmpty() ? "" : "N° PEDIDO: " + fornecedor.getPedido());
+		holder.tvNota.setText(fornecedor.getNumeroNota().isEmpty() ? "" : "N° NOTA: " + fornecedor.getNumeroNota());
+		holder.tvConferente.setText(fornecedor.getConferente().isEmpty() ? "" : fornecedor.getConferente());
 
-		// Proteção contra null para todos os campos
-		String motorista = fornecedor.getMotorista() != null ? fornecedor.getMotorista() : "";
-		String placa = fornecedor.getPlaca() != null ? fornecedor.getPlaca() : "";
-		String telefone = fornecedor.getTelefone() != null ? fornecedor.getTelefone() : "";
-		String pedido = fornecedor.getPedido() != null ? fornecedor.getPedido() : "";
-		String numeroNota = fornecedor.getNumeroNota() != null ? fornecedor.getNumeroNota() : "";
-		String conferente = fornecedor.getConferente() != null ? fornecedor.getConferente() : "";
+		// Configuração de visibilidade
+		holder.tvMotorista.setVisibility(fornecedor.getMotorista().isEmpty() ? View.GONE : View.VISIBLE);
+		holder.tvPlaca.setVisibility(fornecedor.getPlaca().isEmpty() ? View.GONE : View.VISIBLE);
+		holder.tvTelefone.setVisibility(fornecedor.getTelefone().isEmpty() ? View.GONE : View.VISIBLE);
+		holder.tvPedido.setVisibility(fornecedor.getPedido().isEmpty() ? View.GONE : View.VISIBLE);
+		holder.tvNota.setVisibility(fornecedor.getNumeroNota().isEmpty() ? View.GONE : View.VISIBLE);
+		holder.tvConferente.setVisibility(fornecedor.getConferente().isEmpty() ? View.GONE : View.VISIBLE);
 
-		holder.tvMotorista.setText(motorista.isEmpty() ? "" : "Motorista: " + motorista);
-		holder.tvPlaca.setText(placa.isEmpty() ? "" : "Placa: " + formatarPlaca(placa));
-		holder.tvTelefone.setText(telefone.isEmpty() ? "" : "Tel: " + formatarTelefone(telefone));
-		holder.tvPedido.setText(pedido.isEmpty() ? "" : "N° PEDIDO: " + pedido);
-		holder.tvNota.setText(numeroNota.isEmpty() ? "" : "N° NOTA: " + numeroNota);
-		holder.tvConferente.setText(conferente.isEmpty() ? "" : conferente);
-
-		// Configura visibilidade dos campos
-		holder.tvMotorista.setVisibility(motorista.isEmpty() ? View.GONE : View.VISIBLE);
-		holder.tvPlaca.setVisibility(placa.isEmpty() ? View.GONE : View.VISIBLE);
-		holder.tvTelefone.setVisibility(telefone.isEmpty() ? View.GONE : View.VISIBLE);
-		holder.tvPedido.setVisibility(pedido.isEmpty() ? View.GONE : View.VISIBLE);
-		holder.tvNota.setVisibility(numeroNota.isEmpty() ? View.GONE : View.VISIBLE);
-		holder.tvConferente.setVisibility(conferente.isEmpty() ? View.GONE : View.VISIBLE);
-
-		// Configura cores por status
+		// Configuração de cores
 		int corCard;
-		switch (fornecedor.getStatus() != null ? fornecedor.getStatus() : "aguardando") {
+		switch (fornecedor.getStatus()) {
 		case "subiu":
 			corCard = ContextCompat.getColor(context, R.color.status_subiu);
 			break;
@@ -116,38 +99,28 @@ public class FornecedorAdapter extends RecyclerView.Adapter<FornecedorAdapter.My
 			corCard = ContextCompat.getColor(context, R.color.status_foi_embora);
 			break;
 		default:
-			corCard = pedido.trim().isEmpty() ? ContextCompat.getColor(context, R.color.status_nao_agendado)
+			corCard = fornecedor.getPedido().trim().isEmpty()
+					? ContextCompat.getColor(context, R.color.status_nao_agendado)
 					: ContextCompat.getColor(context, R.color.status_aguardando);
 		}
 		holder.cardHeader.setBackgroundColor(corCard);
 
-		// Configuração dinâmica dos botões - MODIFICADO PARA INTERAÇÃO INDEPENDENTE
-		holder.btnLiberado.setVisibility(View.VISIBLE);
-		holder.btnDescarregou.setVisibility(View.VISIBLE);
-		holder.btnApagar.setVisibility(View.VISIBLE);
-
-		// Apenas um botão visível por vez, mas agora qualquer card pode ser manipulado
-		if (fornecedor.getStatus() != null) {
-			switch (fornecedor.getStatus()) {
-			case "subiu":
-				holder.btnLiberado.setVisibility(View.GONE);
-				holder.btnApagar.setVisibility(View.GONE);
-				break;
-			case "foi_embora":
-				holder.btnLiberado.setVisibility(View.GONE);
-				holder.btnDescarregou.setVisibility(View.GONE);
-				break;
-			default: // "aguardando"
-				holder.btnDescarregou.setVisibility(View.GONE);
-				holder.btnApagar.setVisibility(View.GONE);
-			}
+		// Configuração dos botões
+		if (fornecedor.getStatus().equals("subiu")) {
+			holder.btnLiberado.setVisibility(View.GONE);
+			holder.btnDescarregou.setVisibility(View.VISIBLE);
+		} else if (fornecedor.getStatus().equals("foi_embora")) {
+			holder.btnLiberado.setVisibility(View.GONE);
+			holder.btnDescarregou.setVisibility(View.GONE);
+		} else {
+			holder.btnLiberado.setVisibility(View.VISIBLE);
+			holder.btnDescarregou.setVisibility(View.GONE);
 		}
 
-		// Listeners dos botões
 		holder.btnLiberado.setOnClickListener(v -> mostrarDialogoConferente(fornecedor, position));
 		holder.btnDescarregou.setOnClickListener(v -> registrarSaida(fornecedor, position));
-		holder.btnApagar.setOnClickListener(v -> listener.onApagarClick(fornecedor, position));
 
+		// Menu de contexto
 		holder.itemView.setOnLongClickListener(v -> {
 			showMenuOptions(v, fornecedor, position);
 			return true;
@@ -155,28 +128,22 @@ public class FornecedorAdapter extends RecyclerView.Adapter<FornecedorAdapter.My
 	}
 
 	private void registrarSaida(Fornecedor fornecedor, int position) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setTitle("Confirmar Saída");
-		builder.setMessage("Deseja registrar a saída deste fornecedor?");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy 'às' HH:mm", Locale.getDefault());
+		String dataHora = sdf.format(new Date());
 
-		builder.setPositiveButton("Sim", (dialog, which) -> {
-			String dataHora = sdfDisplay.format(new Date());
-			fornecedor.setHoraSaida(dataHora);
-			fornecedor.setStatus("foi_embora");
+		fornecedor.setHoraSaida(dataHora);
+		fornecedor.setStatus("foi_embora");
 
-			if (listener != null) {
-				listener.onFornecedorAtualizado(fornecedor, position);
-			}
-			notifyItemChanged(position);
-		});
-
-		builder.setNegativeButton("Não", null);
-		builder.show();
+		if (listener != null) {
+			listener.onFornecedorAtualizado(fornecedor, position);
+		}
+		notifyItemChanged(position);
+		mostrarInformacoesCompletas(fornecedor);
 	}
 
 	private void mostrarDialogoConferente(Fornecedor fornecedor, int position) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setTitle("Autorizar Fornecedor");
+		builder.setTitle("Registrar Subida");
 
 		View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_conferente, null);
 		EditText etConferente = dialogView.findViewById(R.id.etConferente);
@@ -185,9 +152,10 @@ public class FornecedorAdapter extends RecyclerView.Adapter<FornecedorAdapter.My
 		builder.setPositiveButton("Confirmar", (dialog, which) -> {
 			String nomeConferente = etConferente.getText().toString().trim();
 			if (!nomeConferente.isEmpty()) {
-				String dataHora = sdfDisplay.format(new Date());
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy 'às' HH:mm", Locale.getDefault());
+				String dataHora = sdf.format(new Date());
 
-				fornecedor.setConferente("Liberado por: " + nomeConferente);
+				fornecedor.setConferente(context.getString(R.string.liberado_por, nomeConferente));
 				fornecedor.setHoraSubida(dataHora);
 				fornecedor.setStatus("subiu");
 
@@ -195,48 +163,8 @@ public class FornecedorAdapter extends RecyclerView.Adapter<FornecedorAdapter.My
 					listener.onFornecedorAtualizado(fornecedor, position);
 				}
 				notifyItemChanged(position);
-			} else {
-				Toast.makeText(context, "Digite o nome do conferente", Toast.LENGTH_SHORT).show();
+				mostrarInformacoesCompletas(fornecedor);
 			}
-		});
-
-		builder.setNegativeButton("Cancelar", null);
-		builder.show();
-	}
-
-	private void showMenuOptions(View view, Fornecedor fornecedor, int position) {
-		PopupMenu popup = new PopupMenu(context, view);
-		popup.inflate(R.menu.fornecedor_menu);
-
-		popup.setOnMenuItemClickListener(item -> {
-			if (item.getItemId() == R.id.menu_info) {
-				listener.onMostrarInfoClick(fornecedor);
-				return true;
-			} else if (item.getItemId() == R.id.menu_editar) {
-				listener.onEditarClick(fornecedor, position);
-				return true;
-			} else if (item.getItemId() == R.id.menu_adicionar_info) {
-				mostrarDialogoAdicionarInfo(fornecedor, position);
-				return true;
-			}
-			return false;
-		});
-		popup.show();
-	}
-
-	private void mostrarDialogoAdicionarInfo(Fornecedor fornecedor, int position) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setTitle("Adicionar Informações");
-
-		View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_adicionar_info, null);
-		EditText etInfo = dialogView.findViewById(R.id.etInfo);
-		etInfo.setText(fornecedor.getObservacoesPortaria() != null ? fornecedor.getObservacoesPortaria() : "");
-
-		builder.setView(dialogView);
-		builder.setPositiveButton("Salvar", (dialog, which) -> {
-			String info = etInfo.getText().toString().trim();
-			fornecedor.setObservacoesPortaria(info);
-			listener.onAdicionarInfoClick(fornecedor, position);
 		});
 
 		builder.setNegativeButton("Cancelar", null);
@@ -249,20 +177,65 @@ public class FornecedorAdapter extends RecyclerView.Adapter<FornecedorAdapter.My
 
 		String numeros = telefone.replaceAll("[^0-9]", "");
 		if (numeros.length() == 11) {
-			return String.format("(%s) %s.%s-%s", numeros.substring(0, 2), numeros.substring(2, 3),
+			return String.format(Locale.getDefault(), "(%s) %s.%s-%s", numeros.substring(0, 2), numeros.substring(2, 3),
 					numeros.substring(3, 7), numeros.substring(7));
 		} else if (numeros.length() == 10) {
-			return String.format("(%s) %s-%s", numeros.substring(0, 2), numeros.substring(2, 6), numeros.substring(6));
+			return String.format(Locale.getDefault(), "(%s) %s-%s", numeros.substring(0, 2), numeros.substring(2, 6),
+					numeros.substring(6));
 		}
 		return telefone;
 	}
 
+	private void mostrarInformacoesCompletas(Fornecedor fornecedor) {
+		StringBuilder mensagem = new StringBuilder();
+		mensagem.append("Fornecedor: ").append(fornecedor.getNome()).append("\n\n");
+		mensagem.append("Motorista: ").append(fornecedor.getMotorista()).append("\n\n");
+		mensagem.append("Placa: ").append(formatarPlaca(fornecedor.getPlaca())).append("\n\n");
+		mensagem.append("Mercadoria: ").append(fornecedor.getMercadoria()).append("\n\n");
+		mensagem.append("Telefone: ").append(formatarTelefone(fornecedor.getTelefone())).append("\n\n");
+		mensagem.append("N° PEDIDO: ").append(fornecedor.getPedido()).append("\n\n");
+		mensagem.append("N° NOTA: ").append(fornecedor.getNumeroNota()).append("\n\n");
+		mensagem.append("Chegada: ").append(fornecedor.getDataChegada()).append("\n\n");
+		mensagem.append("Subida: ")
+				.append(fornecedor.getHoraSubida().isEmpty() ? "Não registrado" : fornecedor.getHoraSubida())
+				.append("\n\n");
+		mensagem.append("Saída: ")
+				.append(fornecedor.getHoraSaida().isEmpty() ? "Não registrado" : fornecedor.getHoraSaida())
+				.append("\n\n");
+
+		if (!fornecedor.getConferente().isEmpty()) {
+			mensagem.append(fornecedor.getConferente()).append("\n\n");
+		}
+
+		new AlertDialog.Builder(context).setTitle("Informações Completas").setMessage(mensagem.toString())
+				.setPositiveButton("OK", null).show();
+	}
+
 	private String formatarPlaca(String placa) {
-		return (placa != null && placa.length() == 7) ? placa.substring(0, 3) + "-" + placa.substring(3) : placa;
+		return (placa.length() == 7) ? placa.substring(0, 3) + "-" + placa.substring(3) : placa;
+	}
+
+	private void showMenuOptions(View view, Fornecedor fornecedor, int position) {
+		PopupMenu popup = new PopupMenu(context, view);
+		popup.inflate(R.menu.fornecedor_menu);
+
+		popup.setOnMenuItemClickListener(item -> {
+			if (item.getItemId() == R.id.menu_info) {
+				mostrarInformacoesCompletas(fornecedor);
+				return true;
+			} else if (item.getItemId() == R.id.menu_editar) {
+				if (listener != null) {
+					listener.onEditarClick(fornecedor, position);
+				}
+				return true;
+			}
+			return false;
+		});
+		popup.show();
 	}
 
 	@Override
 	public int getItemCount() {
-		return listaFornecedores != null ? listaFornecedores.size() : 0;
+		return listaFornecedores.size();
 	}
 }
