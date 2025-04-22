@@ -1,57 +1,35 @@
 plugins {
-    id 'com.android.application'
+id 'com.android.application'
 }
 
 android {
-    compileSdk 33  // Atualizado para a versão 33
+compileSdk 31
 
-    defaultConfig {
-        applicationId "com.aide.controle"
-        minSdk 21
-        targetSdk 33  // Atualizado para a versão 33
-        versionCode 1
-        versionName "1.0"
-        
-        // Adiciona configuração para evitar erro de 64K
-        multiDexEnabled true
-    }
+defaultConfig {
+applicationId "com.aide.controle"
+minSdk 21
+targetSdk 31
+versionCode 1
+versionName "1.0"
+}
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
+buildTypes {
+release {
+minifyEnabled false
+proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+}
+}
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    
-    // Adiciona viewBinding se estiver usando
-    buildFeatures {
-        viewBinding true
-    }
+compileOptions {
+sourceCompatibility JavaVersion.VERSION_1_8
+targetCompatibility JavaVersion.VERSION_1_8
+}
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.3.1'  // Versão atualizada
-    implementation 'androidx.sqlite:sqlite:2.3.1'
-    
-    // Dependências adicionais necessárias
-    implementation 'androidx.core:core-ktx:1.10.1'
-    implementation 'androidx.activity:activity-ktx:1.7.2'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
-    
-    // Para o Handler corrigido
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
-    
-    // Para multidex (se necessário)
-    implementation 'androidx.multidex:multidex:2.0.1'
-    
-    // Dependência para o SimpleDateFormat (se necessário)
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.4.6'
+implementation 'androidx.appcompat:appcompat:1.4.1'
+implementation 'com.google.android.material:material:1.6.0'
+implementation 'androidx.cardview:cardview:1.0.0'
+implementation 'androidx.recyclerview:recyclerview:1.2.1'
+implementation 'androidx.sqlite:sqlite:2.0.1'
 }
