@@ -1,0 +1,88 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp" >
+
+    <!-- Adicionei um ScrollView para evitar cortes em telas pequenas -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/etNome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nome do Fornecedor"
+                android:inputType="textPersonName"
+                android:maxLines="1" />
+
+            <!-- Adicionei máscara para placa (ex: ABC-1234) -->
+
+            <EditText
+                android:id="@+id/etPlaca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Placa do Veículo"
+                android:inputType="textCapCharacters"
+                android:maxLength="8" />
+
+            <!-- Campo obrigatório -->
+
+            <EditText
+                android:id="@+id/etMercadoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Mercadoria"
+                android:importantForAutofill="no"
+                android:inputType="text" />
+
+            <!-- Campos opcionais -->
+
+            <EditText
+                android:id="@+id/etMotorista"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Motorista"
+                android:inputType="textPersonName" />
+
+            <!-- Formato de telefone -->
+
+            <EditText
+                android:id="@+id/etTelefone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Telefone"
+                android:inputType="phone" />
+
+            <!-- Validação numérica -->
+
+            <EditText
+                android:id="@+id/etPedido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="N° do Pedido"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/etNumeroNota"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="N° da Nota Fiscal"
+                android:inputType="number" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

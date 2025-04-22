@@ -1,0 +1,20 @@
+<resources>
+
+    <string name="app_name">Sentinela Digital</string>
+    <string name="adicionar_fornecedor">Adicionar Fornecedor</string>
+    <string name="hint_nome">Nome do Fornecedor</string>
+    <string name="hint_placa">Placa do Veículo</string>
+    <string name="hint_mercadoria">Mercadoria</string>
+    <string name="hint_motorista">Motorista</string>
+    <string name="hint_telefone">Telefone</string>
+    <string name="hint_pedido">N° Pedido</string>
+    <string name="btn_adicionar">Adicionar</string>
+    <string name="btn_cancelar">Cancelar</string>
+    <string name="btn_liberado">Autorizar</string>
+    <string name="btn_descarregou">Liberar Saída</string>
+    <string name="dialog_conferente">Nome do Conferente</string>
+    <string name="liberado_por">Liberado por: %s</string>
+    <string name="hint_numero_nota">N° da Nota Fiscal</string>
+    <string name="btn_apagar">Apagar</string>
+
+</resources>

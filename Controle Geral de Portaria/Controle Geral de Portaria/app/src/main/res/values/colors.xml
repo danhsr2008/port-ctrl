@@ -1,0 +1,17 @@
+<resources>
+
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="azul_claro">#FF64B5F6</color>
+    <color name="azul_claro_escuro">#FF42A5F5</color>
+    <color name="status_aguardando">#FFFFA500</color>
+    <color name="status_subiu">#FF4CAF50</color>
+    <color name="status_foi_embora">#FF2196F3</color>
+    <color name="status_nao_agendado">#FFF44336</color>
+
+</resources>
